@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { SearchResults } from "./Templates/SearchResults"
+import { SearchResultsJson } from "./Templates/SearchResultsJson"
+import HomePage from "./Templates/HomePage"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SingleBookPage from "./Templates/SingleBookPage"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        {/* <SearchResults/> */}
+        {/* <SearchResultsJson /> */}
+        {/* <HomePage/> */}
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage/>} />
+            <Route path="/searchresults" element={<SearchResultsJson/>} />
+            <Route path="/singlebook" element={<SingleBookPage/>}/>
+          </Routes>
+        </Router>
     </div>
   );
 }
