@@ -30,7 +30,7 @@
       "authorAvatar": "../images/author1.svg",
       "status": {
         "isReading": true,
-        "isBookmarked": false,
+        "isBookmarked": true,
         "isRecommended": false,
         "peopleAlsoRead": false,
         "isTopRated": false
@@ -102,7 +102,7 @@
       "authorAvatar": "../images/author1.svg",
       "status": {
         "isReading": false,
-        "isBookmarked": false,
+        "isBookmarked": true,
         "isRecommended": false,
         "peopleAlsoRead": false,
         "isTopRated": false
@@ -173,7 +173,7 @@
       "numberOfRatings": "830 ratings",
       "authorAvatar": "../images/author1.svg",
       "status": {
-        "isReading": false,
+        "isReading": true,
         "isBookmarked": false,
         "isRecommended": false,
         "peopleAlsoRead": false,
@@ -183,9 +183,11 @@
     {
       "id": 11,
       "title": "Inorganic Chemistry",
-      "author": "By VK Ahulwalia",
+      "author": "By VK",
+      "description": "Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more",
       "image": "../images/Rectangle 7.svg",
       "category": "Chemistry",
+      "rating": 4.5,
       "pages": "20/250 pages left",
       "status": {
         "isReading": true,
@@ -198,9 +200,11 @@
     {
       "id": 12,
       "title": "The Physics Book",
-      "author": " By Clifford A Pickover",
+      "author": "By Clif",
+      "description": "Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more",
       "image": "../images/Rectangle 7-1.svg",
       "category": "Physics",
+      "rating": 4.5,
       "pages": "120/300 pages left",
       "status": {
         "isReading": true,
@@ -213,9 +217,11 @@
     {
       "id": 13,
       "title": "Biology",
-      "author": "Marielle Hoefnagelle",
+      "author": "Marie",
+      "description": "Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more",
       "image": "../images/Rectangle 7-2.svg",
       "category": "Biology",
+      "rating": 4.5,
       "pages": "111/210 pages left",
       "status": {
         "isReading": true,
@@ -228,9 +234,11 @@
     {
       "id": 14,
       "title": "World History",
-      "author": "By Krishna Reddy",
+      "author": "Krish",
+      "description": "Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more",
       "image": "../images/Rectangle 7-3.svg",
       "category": "History",
+      "rating": 4.5,
       "pages": "300/320 pages left",
       "status": {
         "isReading": true,
@@ -249,7 +257,7 @@
       "rating": 4.5,
       "numberOfRatings": "1230 ratings",
       "status": {
-        "isReading": false,
+        "isReading": true,
         "isBookmarked": false,
         "isRecommended": true,
         "peopleAlsoRead": false,
@@ -265,7 +273,7 @@
       "rating": 4.5,
       "numberOfRatings": "1230 ratings",
       "status": {
-        "isReading": false,
+        "isReading": true,
         "isBookmarked": false,
         "isRecommended": true,
         "peopleAlsoRead": false,

@@ -1,11 +1,10 @@
 import { SearchResults } from "./Templates/HomePage"
 import { SearchResultsJson } from "./Templates/SearchResultsJson"
-import HomePage from "./Templates/HomePageOld"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingleBookPage from "./Templates/SingleBookPage"
 import HomePagev1 from "./Templates/HomePage";
-import SingleBook from "./Templates/SingleBookPagev1"
 import { SeeAllReadingBooks } from "./Templates/SeeAllReadingBooks";
+import{ MyLibrary} from "./Templates/MyLibrary"
 
 function App() {
   return (
@@ -19,6 +18,7 @@ function App() {
             <Route path="/searchresults" element={<SearchResultsJson/>} />
             <Route path="/bookdetails" element={<SingleBookPage/>}/>
             <Route path="/seeallreading" element={<SeeAllReadingBooks/>}/>
+            <Route path="/mylibrary" element={<MyLibrary/>}/>
           </Routes>
         </Router>
         

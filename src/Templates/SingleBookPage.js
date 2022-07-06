@@ -166,8 +166,11 @@ const Book = () => {
 let seeAllResults = () => {
 navigate('/searchresults')
 }
+let navigateAllReading = () => {
+    navigate('/seeallreading')
+}
 let navigateHome = () => {
-    navigate('/')
+  navigate('/')
 }
 let [explore, setExplore]= useState(false)
 
@@ -205,12 +208,18 @@ const [bookInfo, setBookInfo] = useState([
   ]);
   const queryParams = new URLSearchParams(window.location.search);
   const ID = queryParams.get('id');
+  const [status,setStatus]=useState("Start Reading")
+  
+  
   let getBookInfo = async () => {
 
     const response = await api.get(`/books/${ID}`)
     const data = response.data
     console.log(JSON.stringify(data))
     setBookInfo(data)
+    if(data.status.isReading){
+      setStatus("Continue Reading")
+    }
   }
   const AllBooks=async ()=>{
     const response= await api.get("/books/")
@@ -218,6 +227,7 @@ const [bookInfo, setBookInfo] = useState([
     //console.log(JSON.stringify(data))
     setAllBooks(data)
 }
+
 let addToReading= async (num)=>{
     bookInfo.status.isReading=true
     await api.put(`/books/${num}`,bookInfo)
@@ -225,8 +235,11 @@ let addToReading= async (num)=>{
   useEffect(() =>{
     console.log("useEffect")
     getBookInfo();
-    AllBooks();
+    AllBooks();  
+  
 },[] )
+
+
   return (
     
     <Container>
@@ -238,7 +251,8 @@ let addToReading= async (num)=>{
         <SuperContainer>
                 <NewContainer>
                 <BookDetails>
-                    <HeroBookImage overrides={{"Rectangle 14":{src:bookInfo.image},"Concise Inorganic Chemistry":{children:bookInfo.title},"By J D Lee":{children:bookInfo.author},"Category: Chemistry":{children:bookInfo.category},"4.5":{children:bookInfo.rating},"830 reviews":{children:bookInfo.numberOfRatings},"Button":{onClick:() => {navigateHome();addToReading(bookInfo.id)}}}}/>
+                  
+                    <HeroBookImage overrides={{"Rectangle 14":{src:bookInfo.image},"Concise Inorganic Chemistry":{children:bookInfo.title},"By J D Lee":{children:bookInfo.author},"Category: Chemistry":{children:bookInfo.category},"4.5":{children:bookInfo.rating},"830 reviews":{children:bookInfo.numberOfRatings},"Button":{onClick:() => {navigateAllReading();addToReading(bookInfo.id)},children:status}}} />
                 </BookDetails>
 
             <BookDescription>
@@ -254,10 +268,11 @@ let addToReading= async (num)=>{
                   <p>Your Batchmates Also Read</p>
             </SuggestionHeader>
             <SuggestionComponent>
-              <Suggested/>
-              <Suggested/>
-              <Suggested/>
-              <Suggested/>
+              
+              {allBooks.filter((book) => book?.status?.isTopRated).map((book) => {
+                return(
+                  <Suggested overrides={{"Rectangle 7":{src:book.image},"Inorganic Chemistry":{children:book.title},"Catergory - Chemistry":{children:book.category},"4.5":{children:book.rating}}}/>
+              )})}
               
             </SuggestionComponent>
             <SuggestionHeader>
@@ -276,9 +291,10 @@ let addToReading= async (num)=>{
           </Typography>
         </AuthorFollowedHeader>
         <FollowedAuthorsBooks>
-          <HeroCard />
-          <HeroCard />
-          <HeroCard />
+        {allBooks.filter((book) => book?.status?.isReading).slice(0,3).map((book) => {
+                return(
+                  <HeroCard overrides={{"Rectangle 7":{src:book.image},"Inorganic Chemistry":{children:book.title},"Catergory - Chemistry":{children:book.category},"4.5":{children:book.rating}}}/>
+              )})}
         </FollowedAuthorsBooks>
       </BooksFollowedByAuthor>
       <ReviewsFromUsersYouFollow>
@@ -307,7 +323,6 @@ let addToReading= async (num)=>{
         <OtherReviews overrides={{ "Radha": { children: "Mira", } }} />
         <OtherReviews overrides={{ "Radha": { children: "Mike", } }} />
         <OtherReviews overrides={{ "Radha": { children: "Ben", } }} />
-        <OtherReviews overrides={{ "Radha": { children: "Azeem", } }} />
       </Reviews>
       <Recommendations>
         <AuthorFollowedHeader>

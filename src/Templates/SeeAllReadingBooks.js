@@ -108,24 +108,34 @@ export const SeeAllReadingBooks = () => {
     let navigateHome = () => {
       navigate('/')
     }
+    let MyLibrary= () =>{
+      navigate("/mylibrary")
+    }
+    let BookmarkStatus= async (num)=>{
+      const response = await api.get(`/books/${num}`)
+    const data = response.data
+     data.status.isBookmarked = data.status?.isBookmarked ? false :true;
+      console.log(data.status?.isBookmarked+" harsha")
+      await api.put(`/books/${num}`,data)
+      window.location.reload(false);
+  }
     
-
       let [explore, setExplore]= useState(false)
       return (
           <WholeContainer>
-              <Header overrides={{ "Button27082": { onClick: () => { explore ? setExplore(false) : setExplore(true); } }, "Button27078":{onClick:() =>{navigateHome()}}}}/>
+              <Header overrides={{ "Button27082": { onClick: () => { explore ? setExplore(false) : setExplore(true); } }, "Button27078":{onClick:() =>{navigateHome()}},"Button27087":{onClick:() =>{MyLibrary()}}}}/>
               {/* {explore? <ExploreContainer><Organismsalltopics /> </ExploreContainer> : null} */}
               <AllResults>
                   <Typo>
-                    <Headline/>
+                    <Headline overrides={{"Search Results for J D Lee":{children:"Books you are Reading"},"SelectField53442":{width:150},"SelectField92765":{placeholder:"Sort By"}}}/>
                   </Typo>
                   <BooksContainer>
                       {books.filter((book) => (book?.status?.isReading)).map((book) => {
                           return (
                               <SingleBookContainer>
                                   <Organismscardsearchresults overrides={{"Rectangle 13":{src:book.image}, "J D Lee":{children:book.author,onClick:() => { console.log("harsha")}},
-                                  "Inorganic Chemistry":{children:book.title},"Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more":{children:book.description},
-                                  "830 ratings":{children:book.numberOfRatings},"4.5":{children:book.rating},"Catergory - Humorous":{children:book.category},"HeroCrad60":{onClick:() => {navigate(`/bookdetails/?id=${book.id}`)}}}}/>
+                                  "Inorganic Chemistry":{children:book.title,onClick:() => {navigate(`/bookdetails/?id=${book.id}`)}},"Nature chemistry deals with different biocatalytic approaches to transform phenols by adding different neurons See more":{children:book.description},
+                                  "830 ratings":{children:book.numberOfRatings},"4.5":{children:book.rating},"Catergory - Humorous":{children:book.category},"MyIcon/bookmark_border":{onClick:()=>{BookmarkStatus(book.id);navigate(`/mylibrary`)}}}}/>
                               </SingleBookContainer>
                           );
                           })}

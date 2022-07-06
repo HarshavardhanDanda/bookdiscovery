@@ -26,8 +26,8 @@ const HeaderContainer = styled("div")({
   flexDirection: 'column',
   alignContent: 'center',
   alignItems: 'center',
-  marginBottom:56
-
+  marginBottom:56,
+  
 })
 const CardBody = styled("div")({
   // position: 'relative',
@@ -84,34 +84,29 @@ function HomePage() {
         },
       ]);
    
-    const [count, setCount] = useState(0)
+    
     const AllBooks=async ()=>{
         const response= await api.get("/books/")
         const data = response.data;
-        //console.log(response)
         setAllBooks(data)
-      //   var counter=0;
-      // while(data){
-      //   if(data.status?.isReading===true){
-      //     counter+=1;
-      //   }
-      // }
-      // setCount(counter)   
+         
     }
+    const [count, setCount] = useState(0)
+    const [booksToRead, setBooksToRead] =useState(0)
     const Counter=async ()=>{
       const response= await api.get("/books/")
       const data = response.data;
       //console.log(data.status?.isReading)
       var counter=0;
     for(var i=0;i<data.length;i++){
-      if(data.status?.isReading===true){
+      if(data[i]?.status?.isReading){
         counter+=1;
       }
     }
-    setCount(counter)   
+    setCount(counter) 
+    setBooksToRead(data.length-counter) 
   }
-    
-    
+     
     
     useEffect(() => {
         AllBooks();
@@ -135,13 +130,24 @@ function HomePage() {
   let seeMoreReading= () =>{
     navigate("/seeallreading")
   }
+  let MyLibrary= () =>{
+    navigate("/mylibrary")
+  }
+  let BookmarkStatus= async (num)=>{
+    const response = await api.get(`/books/${num}`)
+  const data = response.data
+   data.status.isBookmarked = data.status?.isBookmarked ? false :true;
+    console.log(data.status?.isBookmarked+" harsha")
+    await api.put(`/books/${num}`,data)
+    window.location.reload(false);
+}
 
   return (
     <>
     
       <HeaderContainer>
         <Header
-          overrides={{ "Button27082": { onClick: () => { explore ? setExplore(false) : setExplore(true); } } }}
+          overrides={{ "Button27082": { onClick: () => { explore ? setExplore(false) : setExplore(true); } },"Button27087":{onClick:() =>{MyLibrary()}}}}
         />
     
       
@@ -151,8 +157,8 @@ function HomePage() {
 
         <CardBody>
           <Organismscardreport overrides={{"CURRENTLY READING":{children:"CURRENTLY READING"},"26":{children:count}}} />
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS TO READ"},"26":{children:"100"}}}/>
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS READ"},"26":{children:100}}}/>
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS TO READ"},"26":{children:booksToRead}}}/>
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS READ"},"26":{children:5}}}/>
           <Organismscardreport overrides={{"CURRENTLY READING":{children:"TARGET PER YEAR"},"26":{children:"100"}}}/>
         </CardBody>
 
@@ -194,11 +200,11 @@ function HomePage() {
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
           
-            {allBooks.filter((book) => book?.status?.isRecommended).map((book) => {
+            {allBooks.filter((book) => book?.status?.isRecommended).slice(0,4).map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
-                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
-                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating}}}/>
+                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title,onClick:() => {navigate(`/bookdetails/?id=${book.id}`)}},
+                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating},"MyIcon/bookmark_border":{onClick:()=>{BookmarkStatus(book.id);navigate(`/mylibrary`)}}}}/>
                     </BooksCurrentlyReadingSectionArrowSection>
                 )
             })}
@@ -217,11 +223,11 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-          {allBooks.filter((book) => book?.status?.peopleAlsoRead).map((book) => {
+          {allBooks.filter((book) => book?.status?.peopleAlsoRead).slice(0,4).map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
-                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
-                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating}}}/>
+                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title,onClick:() => {navigate(`/bookdetails/?id=${book.id}`)}},
+                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating},"MyIcon/bookmark_border":{onClick:()=>{BookmarkStatus(book.id);navigate(`/mylibrary`)}}}}/>
                     </BooksCurrentlyReadingSectionArrowSection>
                 )
             })}
@@ -240,7 +246,7 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-            {allBooks.filter((book) => book?.status===null).map((book) => {
+            {allBooks.filter((book) => book?.status===null).slice(0,6).map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardtopics overrides={{"Rectangle 10":{src:book.image},
@@ -263,11 +269,11 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-          {allBooks.filter((book) => book?.status?.isTopRated).map((book) => {
+          {allBooks.filter((book) => book?.status?.isTopRated).slice(0,4).map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
-                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
-                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating}}}/>
+                        <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title,onClick:() => {navigate(`/bookdetails/?id=${book.id}`)}},
+                          "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating},"MyIcon/bookmark_border":{onClick:()=>{BookmarkStatus(book.id);navigate(`/mylibrary`)}}}}/>
                     </BooksCurrentlyReadingSectionArrowSection>
                 )
             })}
