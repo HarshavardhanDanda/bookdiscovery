@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from 'ui-bookdiscoveryv2-42/dist/NavBarNewv1';
+//import Navbar from 'ui-bookdiscoveryv2-42/dist/NavBarNewv1';
 import HeroBookImage from 'ui-bookdiscoveryv2-42/dist/HeroCard70v1'
 import HeroBodyContent from 'ui-bookdiscoveryv2-42/dist/HeroBodyContent'
 import HeroCard from 'ui-bookdiscoveryv2-42/dist/HeroCard90v1'
@@ -10,16 +10,21 @@ import RecommendatedBooks from 'ui-bookdiscoveryv2-42/dist/HeroCrad10v1'
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import { Navigate,useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import api from '../api/api';
+import Suggestion from 'ui-component-bookdiscovery-42/dist/Organismscardsuggested';
+import Navbar from "ui-bookdiscoveryv2-42/dist/NavBarNewv1"
+import Suggested from "ui-bookdiscoveryv2-42/dist/HeroCard80v1"
+import Organismscardrecommendations from "ui-bookdiscoveryv2-42/dist/HeroCrad10"
+
 
 const Container = styled("div")({
   display: "flex",
   flexDirection: "column",
-
 })
 
 const BottomContainer = styled("div")({
-    marginLeft:"250px"
+    marginLeft:"250px",
   })
 
 const Header = styled("div")({
@@ -85,7 +90,22 @@ const ReviewsFromUsersYouFollow = styled("div")({
   display: "flex",
   flexDirection: "column",
 })
-
+const SuggestionComponent = styled('div')({
+    display:"flex",
+    flexDirection:"column",
+    alignItems:"flex-end",
+    gap:30,
+    marginRight:100,
+    justifyContent:"space-between"
+  });
+  
+  const SuggestionHeader = styled('div')({
+    display:"flex",
+    flexDirection:"column",
+    alignItems:"flex-end",
+    marginRight:170,
+    gap:30,
+  });
 const UsersYouFollowReviews = styled("div")({
   height: "132px",
   display: "flex",
@@ -126,7 +146,21 @@ const RecommendationsBooks = styled("div")({
   gap: "24px",
 })
 
+const NewContainer=styled("div")({
+    display:"flex",
+  flexDirection:"column",
+  gap:20,
+})
+
+const SuperContainer=styled("div")({
+    display:"flex",
+  flexDirection:"row",
+  gap:200,
+  marginRight:300
+})
+
 const Book = () => {
+    // let[value]=props;
     let navigate = useNavigate()
   
 let seeAllResults = () => {
@@ -136,22 +170,102 @@ let navigateHome = () => {
     navigate('/')
 }
 let [explore, setExplore]= useState(false)
+
+const [bookInfo, setBookInfo] = useState([
+    {
+      id: 0,
+      title: "",
+      author: "",
+      description:"",
+      image: "",
+      category: "",
+      rating: 0,
+      numberOfRatings:"",
+      authorAvatar:""
+    },
+  ]);
+  const [allBooks, setAllBooks] = useState([
+    {
+      id: 1,
+      title: "",
+      author: "",
+      image: "",
+      category: "",
+      rating: 0,
+      pages:"",
+      numberOfRatings:"",
+      status:{
+        isReading:true,
+        isBookmarked:false,
+        isRecommended:false,
+        peopleAlsoRead:false,
+        isTopRated:false
+      }
+    },
+  ]);
+  const queryParams = new URLSearchParams(window.location.search);
+  const ID = queryParams.get('id');
+  let getBookInfo = async () => {
+
+    const response = await api.get(`/books/${ID}`)
+    const data = response.data
+    console.log(JSON.stringify(data))
+    setBookInfo(data)
+  }
+  const AllBooks=async ()=>{
+    const response= await api.get("/books/")
+    const data = response.data;
+    //console.log(JSON.stringify(data))
+    setAllBooks(data)
+}
+let addToReading= async (num)=>{
+    bookInfo.status.isReading=true
+    await api.put(`/books/${num}`,bookInfo)
+}
+  useEffect(() =>{
+    console.log("useEffect")
+    getBookInfo();
+    AllBooks();
+},[] )
   return (
+    
     <Container>
       <Header>
       <Navbar overrides={{ "Button27082": { onClick: () => { explore ? setExplore(false) : setExplore(true); } }, "Button27078":{onClick:() =>{navigateHome()}}}}/>
 
       </Header>
       <BottomContainer>
-      <BookDetails>
-        <HeroBookImage />
-      </BookDetails>
-      <BookDescription>
-        <HeroBodyContent />
-      </BookDescription>
-      <AuthorDescription>
-        <MainBody />
-      </AuthorDescription>
+        <SuperContainer>
+                <NewContainer>
+                <BookDetails>
+                    <HeroBookImage overrides={{"Rectangle 14":{src:bookInfo.image},"Concise Inorganic Chemistry":{children:bookInfo.title},"By J D Lee":{children:bookInfo.author},"Category: Chemistry":{children:bookInfo.category},"4.5":{children:bookInfo.rating},"830 reviews":{children:bookInfo.numberOfRatings},"Button":{onClick:() => {navigateHome();addToReading(bookInfo.id)}}}}/>
+                </BookDetails>
+
+            <BookDescription>
+                <HeroBodyContent />
+            </BookDescription>
+            <AuthorDescription>
+                <MainBody />
+            </AuthorDescription>
+        </NewContainer>
+        <NewContainer>
+        
+            <SuggestionHeader>
+                  <p>Your Batchmates Also Read</p>
+            </SuggestionHeader>
+            <SuggestionComponent>
+              <Suggested/>
+              <Suggested/>
+              <Suggested/>
+              <Suggested/>
+              
+            </SuggestionComponent>
+            <SuggestionHeader>
+                  <a href=''><p style={{color:"#FF725E"}}>See More</p></a>
+            </SuggestionHeader>
+            
+        </NewContainer>
+      </SuperContainer>
       <BooksFollowedByAuthor>
         <AuthorFollowedHeader>
           <Typography variant='subtitle2' color="#171717">
@@ -205,10 +319,15 @@ let [explore, setExplore]= useState(false)
           </Typography>
         </AuthorFollowedHeader>
         <RecommendationsBooks>
-          <RecommendatedBooks overrides={{ "Biology": { children: "Basic Physics", }, }}/>
+          {/* <RecommendatedBooks overrides={{ "Biology": { children: "Basic Physics", }, }}/>
           <RecommendatedBooks overrides={{ "Biology": { children: "Bio Organic Chemistry", }, }}/>
           <RecommendatedBooks overrides={{ "Biology": { children: "Crystal Chemistry", }, }}/>
-          <RecommendatedBooks />
+          <RecommendatedBooks /> */}
+          {allBooks.filter((book) => book?.status?.isRecommended).map((book) =>{
+            return(
+             <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
+             "By SergeyVasutin":{children:book.author},"Category: Chemistry":{children:book.category},"530 ratings":{children:book.numberOfRatings},"3.5":{children:book.rating}}}/>
+          )})}
         </RecommendationsBooks>
       </Recommendations>
       </BottomContainer>

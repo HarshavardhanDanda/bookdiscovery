@@ -63,7 +63,7 @@ const Typo= styled("div")({
    marginTop:59
 })
 
-export const SearchResultsJson = () => {
+export const SeeAllReadingBooks = () => {
 
     const [books, setBooks] = useState([
       {
@@ -120,7 +120,7 @@ export const SearchResultsJson = () => {
                     <Headline/>
                   </Typo>
                   <BooksContainer>
-                      {books.filter((book) => ( !book.status?.isRecommended && !book.status?.peopleAlsoRead && !book.status?.isTopRated && !book.status?.isBookmarked && book.status!==null)).map((book) => {
+                      {books.filter((book) => (book?.status?.isReading)).map((book) => {
                           return (
                               <SingleBookContainer>
                                   <Organismscardsearchresults overrides={{"Rectangle 13":{src:book.image}, "J D Lee":{children:book.author,onClick:() => { console.log("harsha")}},

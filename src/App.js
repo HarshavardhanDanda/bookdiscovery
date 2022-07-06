@@ -1,8 +1,11 @@
-import { SearchResults } from "./Templates/SearchResults"
+import { SearchResults } from "./Templates/HomePage"
 import { SearchResultsJson } from "./Templates/SearchResultsJson"
-import HomePage from "./Templates/HomePage"
+import HomePage from "./Templates/HomePageOld"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingleBookPage from "./Templates/SingleBookPage"
+import HomePagev1 from "./Templates/HomePage";
+import SingleBook from "./Templates/SingleBookPagev1"
+import { SeeAllReadingBooks } from "./Templates/SeeAllReadingBooks";
 
 function App() {
   return (
@@ -12,11 +15,13 @@ function App() {
         {/* <HomePage/> */}
         <Router>
           <Routes>
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/" element={<HomePagev1/>} />
             <Route path="/searchresults" element={<SearchResultsJson/>} />
-            <Route path="/singlebook" element={<SingleBookPage/>}/>
+            <Route path="/bookdetails" element={<SingleBookPage/>}/>
+            <Route path="/seeallreading" element={<SeeAllReadingBooks/>}/>
           </Routes>
         </Router>
+        
     </div>
   );
 }

@@ -114,7 +114,7 @@
 
 "booksReading":[
     {
-    "id": 1,
+    "id": 11,
     "title": "Inorganic Chemistry",
     "author": "By VK Ahulwalia",
     "image": "../images/Rectangle 7.svg",
@@ -122,16 +122,16 @@
     "pages":"20/250 pages left"
     },
     {
-        "id": 2,
+        "id": 12,
         "title": "The Physics Book",
         "author": " By Clifford A Pickover",
-        "image": "../images/Rectangle 7.svg",
+        "image": "../images/Rectangle 7-1.svg",
         "category": "Physics",
         "pages":"120/300 pages left"
     },
         
     {
-        "id": 3,
+        "id": 13,
         "title": "Biology",
         "author": "Marielle Hoefnagelle",
         "image": "../images/Rectangle 7-2.svg",
@@ -139,7 +139,7 @@
         "pages":"111/210 pages left"
     },
     {
-        "id": 4,
+        "id": 14,
         "title": "World History",
         "author": "By Krishna Reddy",
         "image": "../images/Rectangle 7-3.svg",
@@ -151,7 +151,7 @@
 
 "bookRecommendation":[
     {
-        "id": 1,
+        "id": 15,
         "title": "Basic Physics",
         "author": "By  Karl F Kuhn",
         "image": "../images/Rectangle 19.svg" ,
@@ -161,7 +161,7 @@
         
     },
     {
-        "id": 2,
+        "id": 16,
         "title": "Bio Organic Chemistry",
         "author": "By  Sidney M Hecht",
         "image": "../images/Rectangle 19-1.svg" ,
@@ -171,7 +171,7 @@
         
     },
     {
-        "id": 3,
+        "id": 17,
         "title": "Crystal Chemistry",
         "author": "By  Gerald Ferey",
         "image": "../images/Rectangle 19-2.svg" ,
@@ -181,7 +181,7 @@
         
     },
     {
-        "id": 4,
+        "id": 18,
         "title": "Biology",
         "author": "By  SergeyVasutin",
         "image": "../images/Rectangle 19-3.svg" ,
@@ -193,7 +193,7 @@
 ],
 "booksReadByOthers":[
     {
-        "id": 1,
+        "id": 19,
         "title": "Inorganic Cemistry",
         "author": "By  Roary Ried",
         "image": "../images/Rectangle 18.svg" ,
@@ -203,7 +203,7 @@
         
     },
     {
-        "id": 2,
+        "id": 20,
         "title": "English Grammar",
         "author": "By  Sidney Greenbaum",
         "image": "../images/Rectangle 18-1.svg" ,
@@ -213,7 +213,7 @@
         
     },
     {
-        "id": 3,
+        "id": 21,
         "title": "Heterocycles Chemistry",
         "author": "By  Yann Martel",
         "image": "../images/Rectangle 18-2.svg" ,
@@ -223,7 +223,7 @@
         
     },
     {
-        "id": 4,
+        "id": 22,
         "title": "World Geograhyy",
         "author": "By Charles Dickens",
         "image": "../images/Rectangle 18-3.svg" ,
@@ -267,7 +267,7 @@
 ],
 "TopRatings":[
     {
-        "id": 1,
+        "id": 23,
         "title": "Principles of Physics",
         "author": "BY Rohit Mehta",
         "image": "../images/Rectangle 20.svg" ,
@@ -277,7 +277,7 @@
         
     },
     {
-        "id": 2,
+        "id": 24,
         "title": "German History",
         "author": "By Eric Dorn Brose",
         "image": "../images/Rectangle 20-1.svg" ,
@@ -287,7 +287,7 @@
         
     },
     {
-        "id": 3,
+        "id": 25,
         "title": "Jungle Book",
         "author": "By Yann Martel",
         "image": "../images/Rectangle 20-2.svg" ,
@@ -297,7 +297,7 @@
         
     },
     {
-        "id": 4,
+        "id": 26,
         "title": "The Prophet",
         "author": "By Charles Dickens",
         "image": "../images/Rectangle 20-3.svg" ,

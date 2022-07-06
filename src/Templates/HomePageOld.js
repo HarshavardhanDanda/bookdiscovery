@@ -14,7 +14,6 @@ import api from "../api/api";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Navigate,useNavigate } from "react-router-dom";
 import Organismscardrecommendations from "ui-bookdiscoveryv2-42/dist/HeroCrad10"
-import SeeAllReadingBooks from "./SeeAllReadingBooks"
 
 const BodyContainer = styled("div")({
   marginTop: 56,
@@ -64,63 +63,95 @@ const BooksCurrentlyReadingSectionArrowSection = styled("div")({
 
 function HomePage() {
   
-    const [allBooks, setAllBooks] = useState([
+    const [reading, setReading] = useState([
         {
-          id: 1,
+          id: 0,
           title: "",
           author: "",
           image: "",
           category: "",
           rating: 0,
-          pages:"",
-          numberOfRatings:"",
-          status:{
-            isReading:true,
-            isBookmarked:false,
-            isRecommended:false,
-            peopleAlsoRead:false,
-            isTopRated:false
-          }
+          pages:""
+
         },
       ]);
-   
-    const [count, setCount] = useState(0)
-    const AllBooks=async ()=>{
-        const response= await api.get("/books/")
+      const [recommends, setRecommends] = useState([
+        {
+          id: 0,
+          title: "",
+          author: "",
+          image: "",
+          category: "",
+          rating:0,
+          numberOfRatings:""
+        },
+      ]);
+      const [readByOthers, setReadByOthers] = useState([
+        {
+          id: 0,
+          title: "",
+          author: "",
+          image: "",
+          category: "",
+          rating:0,
+          numberOfRatings:""
+
+        },
+      ]);
+      const [topicsFollow, setTopicsFollow] = useState([
+        {
+          id: 0,
+          image: "",
+          category:"",
+        },
+      ]);
+      const [topRatings, setTopRatings] = useState([
+        {
+          id: 0,
+          title: "",
+          author: "",
+          image: "",
+          category: "",
+          rating: 0,
+          numberOfRatings:""
+
+        },
+      ]);
+
+    const BooksReading=async ()=>{
+        const response= await api.get("/booksReading/")
         const data = response.data;
-        //console.log(response)
-        setAllBooks(data)
-      //   var counter=0;
-      // while(data){
-      //   if(data.status?.isReading===true){
-      //     counter+=1;
-      //   }
-      // }
-      // setCount(counter)   
+        setReading(data)
     }
-    const Counter=async ()=>{
-      const response= await api.get("/books/")
-      const data = response.data;
-      //console.log(data.status?.isReading)
-      var counter=0;
-    for(var i=0;i<data.length;i++){
-      if(data.status?.isReading===true){
-        counter+=1;
-      }
+    const Recommendations=async ()=>{
+        const response= await api.get("/bookRecommendation/")
+        const data = response.data;
+        setRecommends(data)
     }
-    setCount(counter)   
-  }
-    
-    
-    
+    const PeopleAlsoRead=async ()=>{
+        const response= await api.get("/booksReadByOthers/")
+        const data = response.data;
+        setReadByOthers(data)
+    }
+    const TopicsToFollow=async ()=>{
+        const response= await api.get("/TopicsYouFollow/")
+        const data = response.data;
+        setTopicsFollow(data)
+    }
+    const TopRatings=async ()=>{
+        const response= await api.get("/TopRatings/")
+        const data = response.data;
+        setTopRatings(data)
+    }
+
     useEffect(() => {
-        AllBooks();
+        BooksReading();
+        Recommendations();
+        PeopleAlsoRead();
+        TopicsToFollow();
+        TopRatings();
         console.log("yes working")
     },[])
-    useEffect(() => {
-      Counter();
-      console.log("yes its working")
-  },[])
 
     let [explore, setExplore] = useState();
     const expandExploreDropdown = () => {
@@ -131,9 +162,6 @@ function HomePage() {
   
   let seeAllResults = () => {
     navigate('/searchresults')
-  }
-  let seeMoreReading= () =>{
-    navigate("/seeallreading")
   }
 
   return (
@@ -150,10 +178,10 @@ function HomePage() {
         </BodyContainer>
 
         <CardBody>
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"CURRENTLY READING"},"26":{children:count}}} />
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS TO READ"},"26":{children:"100"}}}/>
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS READ"},"26":{children:100}}}/>
-          <Organismscardreport overrides={{"CURRENTLY READING":{children:"TARGET PER YEAR"},"26":{children:"100"}}}/>
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"CURRENTLY READING"},"atoms/icons/currentreading":{color:"#8C52C6"}}} />
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS TO READ"}}}/>
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"BOOKS READ"}}}/>
+          <Organismscardreport overrides={{"CURRENTLY READING":{children:"TARGET PER YEAR"}}}/>
         </CardBody>
 
         <BooksCurrentlyReading>
@@ -161,14 +189,14 @@ function HomePage() {
             <Typography variant='h6' fontWeight="bold">
               Books you are Reading
             </Typography>
-            <Typography variant='h6' color="#FF725E" onClick={seeMoreReading} >
+            <Typography variant='h6' color="#FF725E" onClick={seeAllResults} >
               See more 
               <KeyboardArrowRightIcon/>
             </Typography>
           </BooksCurrentlyReadingText>
 
           <BooksCurrentlyReadingSection>
-            {allBooks.filter((book) => book?.status?.isReading).slice(0,4).map((book) => {
+            {reading.map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardbooksreading overrides={{"Rectangle 7":{src:book.image},"Three Men in a Boat":{children:book.title},
@@ -176,7 +204,6 @@ function HomePage() {
                     </BooksCurrentlyReadingSectionArrowSection>
                 )
             })}
-            
 
           </BooksCurrentlyReadingSection>
         </BooksCurrentlyReading>
@@ -193,8 +220,7 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-          
-            {allBooks.filter((book) => book?.status?.isRecommended).map((book) => {
+          {recommends.map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
@@ -217,7 +243,7 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-          {allBooks.filter((book) => book?.status?.peopleAlsoRead).map((book) => {
+            {readByOthers.map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
@@ -240,7 +266,7 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-            {allBooks.filter((book) => book?.status===null).map((book) => {
+            {topicsFollow.map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardtopics overrides={{"Rectangle 10":{src:book.image},
@@ -263,7 +289,7 @@ function HomePage() {
             </Typography>
           </BooksCurrentlyReadingText>
           <BooksCurrentlyReadingSection>
-          {allBooks.filter((book) => book?.status?.isTopRated).map((book) => {
+            {topRatings.map((book) => {
                 return(
                     <BooksCurrentlyReadingSectionArrowSection>
                         <Organismscardrecommendations overrides={{"Rectangle 18":{src:book.image},"Biology":{children:book.title},
